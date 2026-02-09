@@ -1,0 +1,948 @@
+/* ============================================================================
+   RED BULL INDIA - MAIN STYLESHEET
+   ============================================================================
+   
+   Table of Contents:
+   1. CSS Variables & Global Reset
+   2. Typography Utilities
+   3. Navigation Bar
+   4. Hero Section (Homepage Carousel)
+   5. Page Hero (Events, Athletes, Drinks)
+   6. Content Container & Grid Layouts
+   7. Card Components (Drinks, Events, Athletes)
+   8. Horizontal Scroll Containers
+   9. Event Cards (New Design)
+   10. Footer
+   11. Responsive Styles
+   
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. CSS VARIABLES & GLOBAL RESET
+   ============================================================================
+   Design tokens for consistent theming across the site.
+   - Primary: Dark navy blue (#0b1c3d)
+   - Accent: Red Bull red (#ea1d2c)
+   - Secondary: Light grey background (#f7f7f7)
+   ============================================================================ */
+
+:root {
+    --primary-color: #0b1c3d;
+    --accent-color: #ea1d2c;
+    --secondary-color: #f7f7f7;
+    --text-color: #111;
+    --white: #ffffff;
+    --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-heading: 'Bull', 'Helvetica Neue', sans-serif;
+    --nav-height: 80px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--white);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+/* ============================================================================
+   2. TYPOGRAPHY UTILITIES
+   ============================================================================ */
+
+.heading-l {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 5px solid var(--accent-color);
+}
+
+
+/* ============================================================================
+   3. NAVIGATION BAR
+   ============================================================================
+   Fixed navbar with:
+   - Transparent gradient over hero sections
+   - Solid background when scrolled past hero
+   - Hide/show on scroll behavior (controlled by JS)
+   - Centered pill navigation with hover and active states
+   ============================================================================ */
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    height: var(--nav-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    color: var(--white);
+    pointer-events: none;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.nav-bar.nav-hidden {
+    transform: translateY(-100%);
+}
+
+.nav-bar.nav-solid {
+    background: var(--primary-color);
+}
+
+.nav-bar>* {
+    pointer-events: auto;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: background 0.2s;
+}
+
+.menu-icon:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.logo-container img {
+    height: 28px;
+    object-fit: contain;
+}
+
+.nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 20, 30, 0.6);
+    padding: 6px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 5px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+    padding: 1px 30px;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+}
+
+.nav-links a.active {
+    color: var(--white);
+    background-color: transparent;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-btn {
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+}
+
+
+/* ============================================================================
+   4. HERO SECTION (Homepage Carousel)
+   ============================================================================
+   Full-viewport hero with:
+   - Auto-advancing slide carousel (JS controlled)
+   - Gradient overlay for text readability
+   - Dot navigation indicators
+   - CTA button and event logos
+   ============================================================================ */
+
+.hero-container {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a1a;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out, visibility 0s 1s;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1s ease-in-out, visibility 0s 0s;
+}
+
+.hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 40px 60px 40px;
+    color: var(--white);
+}
+
+.hero-content {
+    max-width: 800px;
+    animation: fadeUp 0.8s ease-out;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.hero-desc {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    max-width: 600px;
+}
+
+.hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0px;
+    opacity: 0.8;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cta-button {
+    background: var(--accent-color);
+    color: var(--white);
+    border: none;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.cta-button:hover {
+    background: #c41423;
+    transform: translateY(-2px);
+}
+
+.event-logo-small {
+    width: 50px;
+    height: auto;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 100;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot:hover {
+    width: 25px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.dot.active {
+    width: 40px;
+    height: 8px;
+    background: var(--white);
+    border-radius: 4px;
+}
+
+.dot.active:hover {
+    width: 40px;
+    background: var(--white);
+}
+
+
+/* ============================================================================
+   5. PAGE HERO (Events, Athletes, Drinks)
+   ============================================================================
+   Shorter hero banner (60vh) for subpages with darker overlay gradient.
+   ============================================================================ */
+
+.page-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+}
+
+.page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #00172b 0%, rgba(0, 23, 43, 0.5) 40%, rgba(0, 23, 43, 0.2) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px 40px 120px;
+    color: var(--white);
+}
+
+.page-hero-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.page-hero-desc {
+    font-size: 1rem;
+    max-width: 100%;
+    line-height: 1.4;
+    opacity: 0.8;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================================
+   6. CONTENT CONTAINER & GRID LAYOUTS
+   ============================================================================ */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 120px 20px 60px;
+}
+
+body:not(.home-page) .nav-bar {
+    background: var(--primary-color);
+    position: sticky;
+}
+
+body:not(.home-page) .nav-center {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.drinks-grid,
+.events-grid,
+.athletes-grid {
+    display: grid;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.drinks-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.events-grid,
+.athletes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-content: center;
+}
+
+
+/* ============================================================================
+   7. CARD COMPONENTS (Drinks, Events, Athletes)
+   ============================================================================
+   Shared card styling with hover lift effect.
+   Athlete cards use flex properties for horizontal scroll layout.
+   ============================================================================ */
+
+.drink-card,
+.event-card,
+.athlete-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+    position: relative;
+    flex: 0 0 calc(25% - 18px);
+    scroll-snap-align: start;
+    margin-top: -50px;
+    z-index: 10;
+}
+
+.athlete-card:hover {
+    transform: translateY(-10px);
+    z-index: 15;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.drink-card {
+    padding: 30px;
+    text-align: center;
+}
+
+.event-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.athlete-card img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+.event-info {
+    padding: 20px;
+}
+
+.event-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.7rem;
+}
+
+.athlete-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    color: white;
+}
+
+
+/* ============================================================================
+   8. HORIZONTAL SCROLL CONTAINERS
+   ============================================================================
+   Home page sections with scrollable card rows.
+   ============================================================================ */
+
+.home-section {
+    padding: 50px 40px;
+    background: var(--secondary-color);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+.view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 20px;
+    border: 1.5px solid #ccc;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+.view-all-btn:hover {
+    background: #e8e8e8;
+    border-color: #aaa;
+}
+
+.scroll-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    scroll-snap-type: x mandatory;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.drink-scroll-card {
+    flex: 0 0 calc(25% - 15px);
+    min-width: 220px;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    border: 1px solid #eee;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.drink-scroll-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.drink-scroll-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.drink-scroll-card img {
+    height: 220px;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.event-scroll-card {
+    flex: 0 0 calc(25% - 15px);
+    min-width: 240px;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.event-scroll-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.event-scroll-image {
+    height: 150px;
+    background-position: center;
+}
+
+.event-scroll-info {
+    padding: 18px;
+}
+
+.event-scroll-info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.event-date-small {
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.event-type-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+
+.event-status {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.athlete-scroll-card {
+    flex: 0 0 calc(25% - 15px);
+    min-width: 220px;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.athlete-scroll-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.athlete-bg {
+    height: 180px;
+    background-size: cover;
+    background-position: center top;
+}
+
+.athlete-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.athlete-scroll-info {
+    padding: 50px 15px 20px;
+    text-align: center;
+}
+
+.athlete-country {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.athlete-scroll-info h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 3px;
+}
+
+.athlete-sport-small {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+
+/* ============================================================================
+   9. EVENTS SECTION (New Design)
+   ============================================================================
+   Events page with cards overlapping the hero banner.
+   Features centered horizontal scroll layout.
+   ============================================================================ */
+
+.events-section {
+    position: relative;
+    z-index: 10;
+    padding: 0 40px 40px;
+    margin-top: -80px;
+    background: linear-gradient(to bottom, transparent 0%, transparent 10px, var(--secondary-color) 100px);
+}
+
+.events-scroll-container {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 60px 5px 20px;
+    scroll-snap-type: x mandatory;
+    justify-content: center;
+}
+
+.events-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.events-scroll-container::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+
+.events-scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.event-card-new {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card-new:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.event-card-image {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-card-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.event-card-logo {
+    position: relative;
+    z-index: 2;
+}
+
+.event-card-logo img {
+    height: auto;
+    width: 150px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.event-card-info {
+    padding: 18px;
+}
+
+.event-card-info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.event-card-date {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.event-card-location {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.event-card-category {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.event-card-status {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+.event-card-status.live {
+    color: #e53935;
+    font-weight: 600;
+}
+
+
+/* ============================================================================
+   10. FOOTER
+   ============================================================================
+   Multi-column footer with company links, legal links, and copyright.
+   ============================================================================ */
+
+footer {
+    background: #0a1628;
+    color: #fff;
+    padding: 50px 60px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-column a {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+.footer-column a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.footer-copyright {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    text-align: right;
+}
+
+
+/* ============================================================================
+   11. RESPONSIVE STYLES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .nav-center {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .nav-bar {
+        padding: 0 20px;
+    }
+}
